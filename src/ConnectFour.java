@@ -1,6 +1,8 @@
+//Imports Java
 import java.util.ArrayList;
 import java.net.ServerSocket;
 
+// Import processing core , leave this import in the pde and remove "extends PApplet"
 import processing.core.*;
 
 public class ConnectFour extends PApplet 
@@ -118,21 +120,32 @@ public class ConnectFour extends PApplet
 		{
 			if (keyCode == LEFT)
 			{
+				//Code for reverting the turns
 				isplayerblue = !isplayerblue;
 				int x = cf.history.get(turnCounter)[0];
 				int y = cf.history.get(turnCounter)[1];
 				cf.grid[x][y] = 0;
 				if(turnCounter > 0)
 				{
-					cf.history.remove(turnCounter);
+					//cf.history.remove(turnCounter);
 					turnCounter--;
 				}
 			}
 			
-//			if (keyCode == RIGHT)
-//			{
-//				
-//			}
+			if (keyCode == RIGHT)
+ 			{
+				int x = cf.history.get(turnCounter)[0];
+				int y = cf.history.get(turnCounter)[1];
+				if (isplayerblue)
+				{
+					cf.grid[x][y] = 1;
+				}
+					
+				else
+					cf.grid[x][y] = -1;
+				isplayerblue = !isplayerblue;
+				turnCounter++;
+			}
 		}
 	}
 	
