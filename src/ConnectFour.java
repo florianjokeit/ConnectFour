@@ -6,7 +6,6 @@ import processing.core.*;
 public class ConnectFour extends PApplet 
 {
 	private boolean isplayerblue = true;
-	//private int placeInHistory = 0;
 	private int turnCounter = 0;
 
 	class ConnectFourGame 
