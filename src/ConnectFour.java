@@ -1,11 +1,12 @@
 import java.util.ArrayList;
+import java.net.ServerSocket;
 
 import processing.core.*;
 
 public class ConnectFour extends PApplet 
 {
-	private boolean player = true;
-	private int placeInHistory = 0;
+	private boolean isplayerblue = true;
+	//private int placeInHistory = 0;
 	private int turnCounter = 0;
 
 	class ConnectFourGame 
@@ -31,7 +32,6 @@ public class ConnectFour extends PApplet
 					{
 						z++;
 					}
-							
 				}
 			} return z;
 		}
@@ -55,7 +55,7 @@ public class ConnectFour extends PApplet
 		
 		void displayCounter()
 		{
-			text(turnCounter, 500, 50);
+			text("Turns: " + turnCounter, 400, 50);
 		}
 		
 		int lookForStone(int x, int y)
@@ -70,7 +70,7 @@ public class ConnectFour extends PApplet
 		
 		int xMPos (int x)
 		{
-			return (int) map(x, 0, width, 0, 7);
+			return (int) map(x, 0, 7*50, 0, 7);
 		}
 	}
 	
@@ -79,11 +79,9 @@ public class ConnectFour extends PApplet
 	
 	public void setup()
 	{
-		size(550,6*50);
+		size(550,450);
 		ellipseMode(CORNER);
 		textSize(30);
-		//noLoop();
-	
 	}
 	
 	public void draw()
@@ -96,10 +94,9 @@ public class ConnectFour extends PApplet
 	public void mousePressed()
 	{
 		int x = (cf.xMPos(mouseX));
-		player = !player;
+		isplayerblue = !isplayerblue;
 		int y = cf.lookForStone(x,5);
-		turnCounter++;
-		if (player)
+		if (isplayerblue)
 		{
 			cf.grid[x][y] = 1;
 		}
@@ -107,14 +104,14 @@ public class ConnectFour extends PApplet
 		else
 			cf.grid[x][y] = -1;
 		
-		int[] koordinates = {x,y};
-		if(placeInHistory == cf.history.size()-1)
+		int[] coords = {x,y};
+		
+		if(turnCounter == cf.history.size()-1)
 		{
-			placeInHistory++;
+			turnCounter++;
 		}
-		cf.history.add(koordinates);
-		
-		
+		cf.history.add(coords);
+//		print(cf.history.size());
 	}
 	
 	public void keyPressed()
@@ -123,19 +120,21 @@ public class ConnectFour extends PApplet
 		{
 			if (keyCode == LEFT)
 			{
-				//cf.grid[5][5] = 0;
-				
-				int x = cf.history.get(placeInHistory)[0];
-				int y = cf.history.get(placeInHistory)[1];
+				isplayerblue = !isplayerblue;
+				int x = cf.history.get(turnCounter)[0];
+				int y = cf.history.get(turnCounter)[1];
 				cf.grid[x][y] = 0;
-				if(placeInHistory > 0){
-					placeInHistory--;
+				if(turnCounter > 0)
+				{
+					cf.history.remove(turnCounter);
+					turnCounter--;
 				}
 			}
-			if (keyCode == RIGHT)
-			{
-				
-			}
+			
+//			if (keyCode == RIGHT)
+//			{
+//				
+//			}
 		}
 	}
 	
