@@ -106,12 +106,12 @@ public class ConnectFour extends PApplet
 			cf.grid[x][y] = -1;
 		
 		int[] coords = {x,y};
+		cf.history.add(coords);
 		
 		if(turnCounter == cf.history.size()-1)
 		{
 			turnCounter++;
 		}
-		cf.history.add(coords);
 	}
 	
 	public void keyPressed()
@@ -122,8 +122,8 @@ public class ConnectFour extends PApplet
 			{
 				//Code for reverting the turns
 				isplayerblue = !isplayerblue;
-				int x = cf.history.get(turnCounter)[0];
-				int y = cf.history.get(turnCounter)[1];
+				int x = cf.history.get(turnCounter-1)[0];
+				int y = cf.history.get(turnCounter-1)[1];
 				cf.grid[x][y] = 0;
 				if(turnCounter > 0)
 				{
@@ -134,6 +134,7 @@ public class ConnectFour extends PApplet
 			
 			if (keyCode == RIGHT)
  			{
+				isplayerblue = !isplayerblue;
 				int x = cf.history.get(turnCounter)[0];
 				int y = cf.history.get(turnCounter)[1];
 				if (isplayerblue)
@@ -143,7 +144,6 @@ public class ConnectFour extends PApplet
 					
 				else
 					cf.grid[x][y] = -1;
-				isplayerblue = !isplayerblue;
 				turnCounter++;
 			}
 		}
