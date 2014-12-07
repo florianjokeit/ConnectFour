@@ -110,7 +110,6 @@ public class ConnectFour extends PApplet
 			turnCounter++;
 		}
 		cf.history.add(coords);
-//		print(cf.history.size());
 	}
 	
 	public void keyPressed()
