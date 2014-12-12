@@ -2,13 +2,15 @@
 import java.util.ArrayList;
 //import java.net.ServerSocket;
 
-// Import processing core , leave this import in the pde and remove "extends PApplet"
-import processing.core.PApplet;
+
+// Import processing core , leave out this import in the pde and remove "public class ConnectFour extends PApplet"
+import processing.core.*;
 
 /**
  * @author florian jokeit 2014-12-06
  *
  */
+@SuppressWarnings("serial")
 public class ConnectFour extends PApplet 
 {
 	private boolean isPlayerBlue = true;
@@ -23,9 +25,9 @@ public class ConnectFour extends PApplet
 		{
 			grid = new int[pRows][pCols];
 			history = new ArrayList<int[]>();
-		}
+		} //ConnectFourGame(int pRows, int pCols)
 		
-		int count (int pType)
+		public int count (int pType)
 		{
 			int z = 0;
 			
@@ -39,9 +41,9 @@ public class ConnectFour extends PApplet
 					}
 				}
 			} return z;
-		}
+		} //public int count (int pType)
 		
-		void display(int pSize)
+		public void display(int pSize)
 		{
 			for (int i = 0; i < grid.length; i++)
 			{
@@ -56,15 +58,16 @@ public class ConnectFour extends PApplet
 					}
 				}
 			}
-		}
+			displayCounter();
+		}//public void display(int pSize)
 		
-		void displayCounter()
+		private void displayCounter()
 		{
 			fill(255);        
 			text("Turns: " + turnCounter, 400, 50);
 		}
 		
-		int lookForStone(int pX, int pY)
+		public int lookForStone(int pX, int pY)
 		{
 			try
 			{
@@ -82,24 +85,15 @@ public class ConnectFour extends PApplet
 			return pY;
 		}
 		
-		void clearHistory(int pPosition)
+		public void clearHistory(int pPosition)
 		{
-			while()
-//			for (int i = history.size(); i > pPosition; i++)
-//			{
-//				history.remove(i);
-//			}
+			for (int i = history.size(); i > pPosition; i++)
+			{
+				history.remove(i);
+			}
 		}
 		
-//		int getCoord(ArrayList<int[]> phistory)
-//		{
-//			isPlayerBlue = !isPlayerBlue;
-//			phistory = history;
-//			
-//			return 1;
-//		}
-		
-		int xMPos (int pX)
+		public int xMPos (int pX)
 		{
 			return (int) map(pX, 0, 7*50, 0, 7);
 		}
@@ -112,7 +106,7 @@ public class ConnectFour extends PApplet
 //			
 //			return true;
 //		}
-//	}
+	} //class ConnectFourGame 
 	
 	ConnectFourGame cf = new ConnectFourGame(7,6);
 	
@@ -127,7 +121,6 @@ public class ConnectFour extends PApplet
 	{
 		background(128);
 		cf.display(50);
-		cf.displayCounter();
 	}
 	
 	public void mousePressed()
@@ -187,7 +180,7 @@ public class ConnectFour extends PApplet
 				else
 					cf.grid[x][y] = -1;
 				turnCounter++;
-			}
-		}
-	}
-}
+ 			}//if (keyCode == RIGHT)
+		}//if (key == CODED)
+	}//public void keyPressed()
+} //public class ConnectFour extends PApplet 
