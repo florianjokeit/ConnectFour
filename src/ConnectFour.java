@@ -1,13 +1,17 @@
 //Imports Java
 import java.util.ArrayList;
-import java.net.ServerSocket;
+//import java.net.ServerSocket;
 
 // Import processing core , leave this import in the pde and remove "extends PApplet"
-import processing.core.*;
+import processing.core.PApplet;
 
+/**
+ * @author florian jokeit 2014-12-06
+ *
+ */
 public class ConnectFour extends PApplet 
 {
-	private boolean isplayerblue = true;
+	private boolean isPlayerBlue = true;
 	private int turnCounter = 0;
 
 	class ConnectFourGame 
@@ -15,13 +19,13 @@ public class ConnectFour extends PApplet
 		public ArrayList<int[]> history;
 		int[][] grid;		
 		
-		ConnectFourGame(int rows, int cols)
+		ConnectFourGame(int pRows, int pCols)
 		{
-			grid = new int[rows][cols];
+			grid = new int[pRows][pCols];
 			history = new ArrayList<int[]>();
 		}
 		
-		int count (int type)
+		int count (int pType)
 		{
 			int z = 0;
 			
@@ -29,7 +33,7 @@ public class ConnectFour extends PApplet
 			{
 				for (int j = 0; j < grid[0].length; j++)
 				{
-					if(grid[i][j] == type)
+					if(grid[i][j] == pType)
 					{
 						z++;
 					}
@@ -37,18 +41,18 @@ public class ConnectFour extends PApplet
 			} return z;
 		}
 		
-		void display(int size)
+		void display(int pSize)
 		{
 			for (int i = 0; i < grid.length; i++)
 			{
 				for (int j = 0; j < grid[0].length; j++)
 				{
 					fill(255);
-					rect(i*size, j*size, size, size);
+					rect(i * pSize, j * pSize, pSize, pSize);
 					if (grid[i][j] != 0)
 					{
 						fill(grid[i][j] == -1 ? 255 : 0, 0, grid[i][j] == 1 ? 255: 0);
-						ellipse(i*size, j*size, size, size);
+						ellipse(i * pSize, j * pSize, pSize, pSize);
 					}
 				}
 			}
@@ -56,27 +60,61 @@ public class ConnectFour extends PApplet
 		
 		void displayCounter()
 		{
+			fill(255);        
 			text("Turns: " + turnCounter, 400, 50);
 		}
 		
-		int lookForStone(int x, int y)
+		int lookForStone(int pX, int pY)
 		{
-			if(grid[x][y] != 0)
+			try
 			{
-				return lookForStone(x, y-1);
-				
+				if(grid[pX][pY] != 0)
+				{
+					return lookForStone(pX, pY-1);
+				}
 			}
-			return y;
+			catch(ArrayIndexOutOfBoundsException aioobe)
+			{
+				isPlayerBlue =!isPlayerBlue;
+				pY++;
+				println("Nice try ;)");
+			}
+			return pY;
 		}
 		
-		int xMPos (int x)
+		void clearHistory(int pPosition)
 		{
-			return (int) map(x, 0, 7*50, 0, 7);
+			while()
+//			for (int i = history.size(); i > pPosition; i++)
+//			{
+//				history.remove(i);
+//			}
 		}
-	}
+		
+//		int getCoord(ArrayList<int[]> phistory)
+//		{
+//			isPlayerBlue = !isPlayerBlue;
+//			phistory = history;
+//			
+//			return 1;
+//		}
+		
+		int xMPos (int pX)
+		{
+			return (int) map(pX, 0, 7*50, 0, 7);
+		}
+		
+//		boolean checkforfour(int pX, int pY)
+//		{
+//			int counter = -grid[pX][pY];
+//			
+//			//upside down
+//			
+//			return true;
+//		}
+//	}
 	
 	ConnectFourGame cf = new ConnectFourGame(7,6);
-	
 	
 	public void setup()
 	{
@@ -95,9 +133,9 @@ public class ConnectFour extends PApplet
 	public void mousePressed()
 	{
 		int x = (cf.xMPos(mouseX));
-		isplayerblue = !isplayerblue;
-		int y = cf.lookForStone(x,5);
-		if (isplayerblue)
+		isPlayerBlue = !isPlayerBlue;
+		int y = cf.lookForStone(x,cf.grid[0].length-1);
+		if (isPlayerBlue)
 		{
 			cf.grid[x][y] = 1;
 		}
@@ -112,32 +150,36 @@ public class ConnectFour extends PApplet
 		{
 			turnCounter++;
 		}
+		println(turnCounter);
+		println(cf.history.size());
+		if(turnCounter < cf.history.size())
+			cf.clearHistory(turnCounter);
 	}
 	
 	public void keyPressed()
 	{
 		if (key == CODED)
 		{
-			if (keyCode == LEFT)
+			if (keyCode == LEFT && turnCounter > 0)
 			{
 				//Code for reverting the turns
-				isplayerblue = !isplayerblue;
+				isPlayerBlue = !isPlayerBlue;
 				int x = cf.history.get(turnCounter-1)[0];
 				int y = cf.history.get(turnCounter-1)[1];
 				cf.grid[x][y] = 0;
+				
 				if(turnCounter > 0)
 				{
-					//cf.history.remove(turnCounter);
 					turnCounter--;
 				}
 			}
 			
 			if (keyCode == RIGHT)
  			{
-				isplayerblue = !isplayerblue;
+				isPlayerBlue = !isPlayerBlue;
 				int x = cf.history.get(turnCounter)[0];
 				int y = cf.history.get(turnCounter)[1];
-				if (isplayerblue)
+				if (isPlayerBlue)
 				{
 					cf.grid[x][y] = 1;
 				}
@@ -148,7 +190,4 @@ public class ConnectFour extends PApplet
 			}
 		}
 	}
-	
-	
-	
 }
